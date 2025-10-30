@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>🎼 Cantata Tour (Maharashtra)</title>
   <link rel="manifest" href="manifest.json">
-  <!-- Leaflet 지도 (jsDelivr CDN – 가장 안정적 + integrity 추가) -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
-  <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1C+7nKV5Q=" crossorigin=""></script>
+  <!-- Leaflet 지도 (integrity 제거 + unpkg CDN – 가장 안정적!) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <style>
     body { margin: 0; font-family: 'Malgun Gothic', sans-serif; background: #f8f9fa; }
     .container { max-width: 800px; margin: 20px auto; padding: 20px; background: white; border-radius: 15px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
@@ -75,7 +75,7 @@
   <script src="data.js"></script>
   <script src="app.js"></script>
 
-  <!-- 다국어 & PWA & 지도 에러 핸들링 -->
+  <!-- 다국어 & PWA & 지도 fallback -->
   <script>
     const LANG = {
       "en": { "install": "Install as App" },
@@ -108,9 +108,10 @@
       });
     });
 
-    // 지도 로드 실패 시 메시지
+    // 지도 로드 실패 시 fallback
     window.addEventListener('load', () => {
-      if (!window.L) {
+      if (!window.L || !L.map) {
+        document.getElementById('map-error').innerHTML = '지도 로드 실패! <a href="javascript:location.reload()">새로고침</a> 해봐.';
         document.getElementById('map-error').style.display = 'block';
       }
     });
