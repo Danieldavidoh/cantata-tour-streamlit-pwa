@@ -5,26 +5,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>🎼 칸타타 투어 (마하라슈트라)</title>
   <link rel="manifest" href="manifest.json">
-  <link href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet">
+  <!-- Leaflet 지도 라이브러리 (지도 나타나게!) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <style>
     body { margin: 0; font-family: 'Malgun Gothic', sans-serif; background: #f8f9fa; }
     .container { max-width: 800px; margin: 20px auto; padding: 20px; background: white; border-radius: 15px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
     h1 { text-align: center; color: #1a73e8; }
-    select, input, button { margin: 5px 0; padding: 10px; border-radius: 8px; border: 1px solid #ddd; }
-    button { background: #1a73e8; color: white; cursor: pointer; }
+    h2 { color: #28a745; }
+    select, input, button { margin: 5px 0; padding: 10px; border-radius: 8px; border: 1px solid #ddd; width: 100%; }
+    button { background: #1a73e8; color: white; cursor: pointer; font-weight: bold; }
     button:hover { background: #0d47a1; }
-    .route { font-weight: bold; color: #d32f2f; }
-    .map { height: 400px; margin: 20px 0; border-radius: 10px; }
+    .route { font-weight: bold; color: #d32f2f; font-size: 1.1rem; }
+    .map { height: 400px; margin: 20px 0; border-radius: 10px; border: 1px solid #ddd; }
     .venue { background: #e8f5e9; padding: 10px; margin: 5px 0; border-radius: 8px; }
-    #install-btn { background: #4caf50; width: 100%; margin: 15px 0; font-size: 1.1rem; }
+    #install-btn { background: #4caf50; width: 100%; margin: 15px 0; font-size: 1.1rem; display: none; }
+    .city-block { border: 1px solid #ddd; margin: 15px 0; padding: 15px; border-radius: 10px; background: #f9f9f9; }
+    .travel-info { text-align: center; color: #666; font-style: italic; margin: 5px 0; }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>🎼 칸타타 투어 <small style="color:#888;">(마하라슈트라)</small></h1>
     <p style="text-align:center; color:#555;">모바일: ⋮ → '홈 화면에 추가' → 앱처럼 사용!</p>
-    <button id="install-btn" style="display:none;">📱 앱으로 설치하기</button>
+    <button id="install-btn">📱 앱으로 설치하기</button>
 
     <select id="startCity"></select>
     <button onclick="startTour()">🚀 시작</button>
@@ -41,10 +45,12 @@
     </div>
   </div>
 
+  <!-- 데이터와 로직 -->
   <script src="data.js"></script>
   <script src="app.js"></script>
+
+  <!-- PWA 설치 마법 -->
   <script>
-    // PWA 설치
     let deferredPrompt;
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
