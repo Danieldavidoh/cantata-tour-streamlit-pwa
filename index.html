@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>🎼 칸타타 투어 (마하라슈트라)</title>
+  <link rel="manifest" href="manifest.json">
+  <link href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <style>
+    body { margin: 0; font-family: 'Malgun Gothic', sans-serif; background: #f8f9fa; }
+    .container { max-width: 800px; margin: 20px auto; padding: 20px; background: white; border-radius: 15px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+    h1 { text-align: center; color: #1a73e8; }
+    select, input, button { margin: 5px 0; padding: 10px; border-radius: 8px; border: 1px solid #ddd; }
+    button { background: #1a73e8; color: white; cursor: pointer; }
+    button:hover { background: #0d47a1; }
+    .route { font-weight: bold; color: #d32f2f; }
+    .map { height: 400px; margin: 20px 0; border-radius: 10px; }
+    .venue { background: #e8f5e9; padding: 10px; margin: 5px 0; border-radius: 8px; }
+    #install-btn { background: #4caf50; width: 100%; margin: 15px 0; font-size: 1.1rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎼 칸타타 투어 <small style="color:#888;">(마하라슈트라)</small></h1>
+    <p style="text-align:center; color:#555;">모바일: ⋮ → '홈 화면에 추가' → 앱처럼 사용!</p>
+    <button id="install-btn" style="display:none;">📱 앱으로 설치하기</button>
+
+    <select id="startCity"></select>
+    <button onclick="startTour()">🚀 시작</button>
+    <button onclick="resetAll()">🔄 전체 초기화</button>
+
+    <div id="routeSection" style="display:none; margin-top:20px;">
+      <select id="nextCity"></select>
+      <button onclick="addCity()">➕ 추가</button>
+      <p><strong>현재 경로:</strong> <span id="routeDisplay" class="route"></span></p>
+      <p>총 거리: <span id="totalDist">0</span> km | 총 시간: <span id="totalTime">0</span> h</p>
+
+      <div id="cityList"></div>
+      <div id="map" class="map"></div>
+    </div>
+  </div>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+  <script>
+    // PWA 설치
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      document.getElementById('install-btn').style.display = 'block';
+    });
+    document.getElementById('install-btn').addEventListener('click', () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then(() => {
+          document.getElementById('install-btn').style.display = 'none';
+        });
+      }
+    });
+  </script>
+</body>
+</html>
